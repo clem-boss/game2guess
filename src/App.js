@@ -22,8 +22,9 @@ function App() {
   }
 
   return (
-    <div className="App section has-background-black-bis">
-      <h1 className="title has-text-white-bis">game2guess</h1>
+    <>
+      <div className="App section has-background-black-bis">
+        <h1 className="title has-text-white-bis">game2guess</h1>
       {document && (
         <>
           <Gallery parentCallback={handleGalleryCallback} source={document.data} />
@@ -31,7 +32,11 @@ function App() {
           <Form numberOfImages={numberOfImages} parentCallback={handleFormCallback} goal={document.data.title[0].text} />
         </>
       )}
-    </div>
+      </div>
+      <footer className="footer has-background-grey-darker has-text-grey-light">
+        © game2guess, un concept de LolaMad développé par ClemBoss
+      </footer>
+    </>
   );
 }
 export default App;

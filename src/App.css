@@ -1,11 +1,17 @@
 .App {
   text-align: center;
-  min-height:100vh;
+  min-height: calc(100vh - 30px);
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.footer {
+  height: 30px;
+  padding: 0;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
