@@ -1,0 +1,10 @@
+.thumbnail-frame {
+    width: 150px;
+    height: 150px;
+    margin: 16px;
+    overflow: hidden;
+}
+
+.thumbnail-frame-content {
+    height: 150px;
+}

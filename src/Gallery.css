@@ -1,0 +1,30 @@
+.columns {
+    width: max-content;
+    margin: 0 auto;
+}
+
+.next-to-reveal, .hidden {
+    height: 150px;
+    width: 150px;
+    border: 2px dotted grey;
+    margin: 16px;
+    border-radius: 8px;
+    border-color: hsl(0, 0%, 29%);
+    color: hsl(0, 0%, 29%);
+}
+
+.next-to-reveal {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    transition: font-size 0.3s ease-in-out;
+    border-color: hsl(0, 0%, 48%);
+    border-style: solid;
+    color: hsl(0, 0%, 48%);
+}
+
+.next-to-reveal:hover {
+    font-size: 64px !important;
+}
