@@ -64,7 +64,7 @@ class Form extends React.Component {
           <input value={this.state.value} onChange={this.handleChange} className={this.state.inputClass} type="text" id="lname" name="gameTitle" placeholder="Titre d'un jeu"></input>
           <br></br>
           <p className="tooltip"><strong>{this.state.remainingSubmits}</strong> essais restants</p>
-          <input className="button is-primary" type="submit" value="Submit"></input>
+          <input className="button is-primary" type="submit" value="Envoyer"></input>
           </form>
            {this.state.isModalActive ? <Modal numberOfImages={this.props.numberOfImages} title={this.state.modalTitle} /> : null}   
         </>
