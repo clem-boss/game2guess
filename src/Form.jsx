@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from './Modal'
-// import './Gallery.css'
+import './Form.css'
 
 class Form extends React.Component {
   constructor(props) {
@@ -54,9 +54,9 @@ class Form extends React.Component {
       return (
         <>
           <form onSubmit={this.handleSubmit}>
-          <input value={this.state.value} onChange={this.handleChange} className="has-background-black-bis input has-text-white-bis" type="text" id="lname" name="gameTitle" placeholder="Titre d'un jeu"></input>
+          <input value={this.state.value} onChange={this.handleChange} className="text-input has-background-black-bis input has-text-white-bis" type="text" id="lname" name="gameTitle" placeholder="Titre d'un jeu"></input>
           <br></br>
-          <p>{this.state.remainingSubmits} essais restants</p>
+          <p className="tooltip"><strong>{this.state.remainingSubmits}</strong> essais restants</p>
           <input className="button is-primary" type="submit" value="Submit"></input>
           </form>
            {this.state.isModalActive ? <Modal numberOfImages={this.props.numberOfImages} title={this.state.modalTitle} /> : null}   

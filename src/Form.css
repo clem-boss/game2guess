@@ -1,0 +1,12 @@
+.text-input {
+    max-width: 300px;
+}
+
+.tooltip {
+    margin: 8px;
+}
+
+::placeholder {
+    color: hsl(0, 0%, 29%) !important;
+    font-style: italic;
+  }
