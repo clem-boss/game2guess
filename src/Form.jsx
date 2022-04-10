@@ -11,7 +11,8 @@ class Form extends React.Component {
       remainingSubmits: 10,
       isModalActive: false,
       modalTitle: '',
-      inputClass: "text-input has-background-black-bis input has-text-white-bis"
+      inputClass: "text-input has-background-black-bis input has-text-white-bis",
+      responses: []
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,12 +28,6 @@ class Form extends React.Component {
     this.setState({isModalActive: state});
     this.forceUpdate();
   }
-
-  handleSubmit(event) {
-    alert(this.state.isModalActive)
-    event.preventDefault();
-    this.setState({isModalActive: true});
-   }
 
    handleSubmit(event) {
     if (this.state.value.toLowerCase() === this.props.goal.toLowerCase()) {
@@ -51,10 +46,20 @@ class Form extends React.Component {
         this.toggleModalState(true);
       }
     }
+    this.makeResponsesGauge();
   } 
 
   handleChange(event) {
     this.setState({value: event.target.value});
+  }
+
+  makeResponsesGauge() {
+    let responses = [];
+    let red = 11 - this.state.remainingSubmits;
+    for (let i = 1; i <= red; i++) {
+      i === red && i !== 10 ? responses.push(<span>✔️</span>) : responses.push(<span>❌</span>);
+    }
+    this.setState({responses: responses});
   }
 
     render() {
@@ -66,7 +71,7 @@ class Form extends React.Component {
           <p className="tooltip"><strong>{this.state.remainingSubmits}</strong> essais restants</p>
           <input className="button is-primary" type="submit" value="Envoyer"></input>
           </form>
-           {this.state.isModalActive ? <Modal numberOfImages={this.props.numberOfImages} title={this.state.modalTitle} /> : null}   
+           {this.state.isModalActive ? <Modal responses={this.state.responses} hints={this.props.hints} title={this.state.modalTitle} /> : null}   
         </>
 
       );

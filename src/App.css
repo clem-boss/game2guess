@@ -1,7 +1,18 @@
+@font-face {
+  font-family: 'Millimetre Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Millimetre Bold'), url('Millimetre-Bold.woff') format('woff');
+  }
+
 .App {
   text-align: center;
   min-height: calc(100vh - 30px);
 }
+
+/* .title {
+  font-family: 'Millimetre Bold';
+} */
 
 .App-logo {
   height: 40vmin;
