@@ -21,10 +21,14 @@ class Modal extends React.Component {
           <div className="modal-background"></div>
           <div className="modal-content">
             <div className="card">
+              <div className="card-content">
               <h2 className="title">{this.state.title}</h2>
+              <p className='content'>
               Indices: {this.props.hints}<br></br>
-              Réponses: {this.props.responses}
-            </div>
+                Réponses: {this.props.responses}
+              </p>
+              </div>
+              </div>
           </div>
           <button onClick={this.onClose} className="modal-close is-large" aria-label="close"></button>
         </div>
