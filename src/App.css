@@ -1,8 +1,8 @@
 @font-face {
-  font-family: 'Millimetre Bold';
+  font-family: 'Millimetre Regular';
   font-style: normal;
   font-weight: normal;
-  src: local('Millimetre Bold'), url('Millimetre-Bold.woff') format('woff');
+  src: local('Millimetre Regular'), url('Millimetre-Regular.woff') format('woff');
   }
 
 .App {
@@ -11,8 +11,8 @@
 }
 
 /* .title {
-  font-family: 'Millimetre Bold';
-} */
+  font-family: 'Millimetre Regular';
+}  */
 
 .App-logo {
   height: 40vmin;

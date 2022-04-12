@@ -4,8 +4,8 @@
 }
 
 .next-to-reveal, .hidden {
-    height: 150px;
-    width: 150px;
+    height: 250px;
+    width: 250px;
     border: 2px dotted grey;
     margin: 16px;
     border-radius: 8px;

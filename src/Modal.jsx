@@ -24,7 +24,7 @@ class Modal extends React.Component {
               <div className="card-content">
               <h2 className="title">{this.state.title}</h2>
               <p className='content'>
-              Indices: {this.props.hints}<br></br>
+                Indices: {this.props.hints}<br></br>
                 Réponses: {this.props.responses}
               </p>
               </div>
