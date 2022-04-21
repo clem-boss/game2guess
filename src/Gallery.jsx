@@ -6,13 +6,23 @@ class Gallery extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      source: this.props.source,
+      source: [],
       NextToReveal: 2,
       IsSecondHint: false,
       IsThirdHint: false,
       IsFourthHint: false,
     }
     this.revealNextHint = this.revealNextHint.bind(this);
+    this.FetchData = this.FetchData.bind(this);
+    this.FetchData();
+  }
+
+  FetchData() {
+    fetch('https://safe-forest-51192.herokuapp.com/images')
+    .then(response => response.json())
+    .then(data => {
+      this.setState({source : data});
+    });
   }
 
   revealNextHint(step) {
@@ -28,16 +38,19 @@ class Gallery extends React.Component {
       return (
         <div className="columns">
           <div className="column">
-           <Thumbnail img={this.state.source.img1.url} />
+            { this.state.source.length > 0 && (
+              <Thumbnail img={this.state.source[0].url} />
+           )
+            }
           </div>
           <div className="column">
-           { this.state.IsSecondHint ? <Thumbnail img={this.state.source.img2.url} /> : this.state.NextToReveal === 2 ? <div className="next-to-reveal" onClick={() => this.revealNextHint(2)}><span className="plus">+</span></div> : <div className="hidden"></div> }
+           { this.state.IsSecondHint ? <Thumbnail img={this.state.source[1].url} /> : this.state.NextToReveal === 2 ? <div className="next-to-reveal" onClick={() => this.revealNextHint(2)}><span className="plus">+</span></div> : <div className="hidden"></div> }
           </div>
           <div className="column">
-           { this.state.IsThirdHint ? <Thumbnail img={this.state.source.img3.url} /> : this.state.NextToReveal === 3 ? <div className="next-to-reveal" onClick={() => this.revealNextHint(3)}><span className="plus">+</span></div> : <div className="hidden"></div> }
+           { this.state.IsThirdHint ? <Thumbnail img={this.state.source[2].url} /> : this.state.NextToReveal === 3 ? <div className="next-to-reveal" onClick={() => this.revealNextHint(3)}><span className="plus">+</span></div> : <div className="hidden"></div> }
           </div>
           <div className="column">
-           { this.state.IsFourthHint ? <Thumbnail img={this.state.source.img4.url} /> : this.state.NextToReveal === 4 ? <div className="next-to-reveal" onClick={() => this.revealNextHint(4)}><span className="plus">+</span></div> : <div className="hidden"></div> }
+           { this.state.IsFourthHint ? <Thumbnail img={this.state.source[3].url} /> : this.state.NextToReveal === 4 ? <div className="next-to-reveal" onClick={() => this.revealNextHint(4)}><span className="plus">+</span></div> : <div className="hidden"></div> }
           </div>
         </div>
       );

@@ -2,7 +2,7 @@
   font-family: 'Millimetre Regular';
   font-style: normal;
   font-weight: normal;
-  src: local('Millimetre Regular'), url('Millimetre-Regular.woff') format('woff');
+  src: local('Millimetre Regular'), url('Millimetre-Regular_web.woff') format('woff');
   }
 
 .App {
@@ -20,7 +20,7 @@
 }
 
 .footer {
-  height: 30px;
+  height: min-content;
   padding: 0;
   text-align: center;
 }

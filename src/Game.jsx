@@ -1,6 +1,8 @@
 import React from 'react'
 import Gallery from './Gallery'
-import Form from './Form';
+import Form from './Form'
+import {decrypt} from './encrypt.js'
+
 
 
 class Game extends React.Component {
@@ -9,16 +11,26 @@ class Game extends React.Component {
     this.state = {
       numberOfImages: 1,
       hints: [],
-      content: ''
+      content: '',
+      title: '',
+      images: [],
     }
     this.handleFormCallback = this.handleFormCallback.bind(this);
     this.handleGalleryCallback = this.handleGalleryCallback.bind(this);
     this.makeImagesGauge = this.makeImagesGauge.bind(this);
+    this.FetchData = this.FetchData.bind(this);
     //this.makeImagesGauge();
   }
 
   componentDidMount() {
+    this.FetchData();
     this.makeImagesGauge(1);
+  }
+
+  FetchData() {
+    fetch('https://safe-forest-51192.herokuapp.com/title')
+    .then(response => response.json())
+    .then(data => this.setState({title : decrypt(data)}));
   }
 
   handleFormCallback(childData) {
@@ -43,9 +55,9 @@ class Game extends React.Component {
     render() {
       return (
         <>
-          <Gallery parentCallback={this.handleGalleryCallback} source={this.props.document.data} />
+          <Gallery parentCallback={this.handleGalleryCallback} source={this.state.images} />
           <h2 className="subtitle has-text-white-bis">Sauriez-vous deviner quel jeu vidéo se cache <br></br> derrière les images ci-dessus ?</h2>
-          <Form hints={this.state.hints} parentCallback={this.handleFormCallback} goal={this.props.document.data.title[0].text} />
+          <Form hints={this.state.hints} parentCallback={this.handleFormCallback} goal={this.state.title} />
         </>
       );
     }
