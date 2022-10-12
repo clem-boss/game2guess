@@ -30,7 +30,7 @@ class Modal extends React.Component {
               </div>
               </div>
           </div>
-          <button onClick={this.onClose} className="modal-close is-large" aria-label="close"></button>
+          {/* <button onClick={this.onClose} className="modal-close is-large" aria-label="close"></button> */}
         </div>
       );
     }

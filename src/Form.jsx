@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import Modal from './Modal'
 import './Form.css'
 
@@ -14,32 +14,64 @@ class Form extends React.Component {
       inputClass: "text-input has-background-black-bis input has-text-white-bis",
       responses: [],
       IGDB_Token: "",
+      apiResults: [],
+      isInputFocused: false,
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModalState = this.toggleModalState.bind(this);
-    // this.returnIGDB_Token = this.returnIGDB_Token.bind(this);
-    // this.searchThroughAPI = this.searchThroughAPI.bind(this);
-    // this.returnIGDB_Token();
+    this.returnIGDB_Token = this.returnIGDB_Token.bind(this);
+    this.searchThroughAPI = this.searchThroughAPI.bind(this);
+    this.onSelectTitle = this.onSelectTitle.bind(this);
+    this.returnIGDB_Token();
+  }
+  
+
+  capitalize(word) {
+    let array = word.split(' ');
+    if(array.length > 1) {
+      return array.map(entry => entry.charAt(0).toUpperCase() + entry.toLowerCase().slice(1)).join(" ");
+    } else {
+      return word.charAt(0).toUpperCase() + word.toLowerCase().slice(1);
+    }
   }
 
-/*   searchThroughAPI() {
-    const axios = require('axios');
+   searchThroughAPI(value) {
+     const axios = require('axios');
+     const slug_value = value.replace(/ /g, "-").toLowerCase().replace(/[.,/#!$%'^&*;:{}=-_`~()]/g, "");
+
     axios({
-      url: "https://api.igdb.com/v4/games",
-      method: 'POST',
-      headers: {
-          'Client-ID': "jwz94hqz4avlwtjqyn7y11fuqbfln4",
-          'Authorization': "Bearer "+this.state.IGDB_Token,
-      },
-      data: "fields *;"
+      url: "https://safe-forest-51192.herokuapp.com/igdb/" + slug_value,
+      method: 'GET'
     })
       .then(response => {
-          console.log(response.data);
+        this.setState({apiResults: response.data});
       })
       .catch(err => {
           console.error(err);
-      });
+      }); 
+  }
+
+  onSelectTitle(title) {
+    this.setState({value: title});
+  }
+
+  doCORSRequest(options, printResult) {
+    var x = new XMLHttpRequest();
+    x.open(options.method, this.state.cors_api_url + options.url);
+    x.onload = x.onerror = function() {
+      printResult(
+        options.method + ' ' + options.url + '\n' +
+        x.status + ' ' + x.statusText + '\n\n' +
+        (x.responseText || '')
+      );
+    };
+    if (/^POST/i.test(options.method)) {
+      x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      x.setRequestHeader('Client-ID', "jwz94hqz4avlwtjqyn7y11fuqbfln4");
+      x.setRequestHeader('Authorization', "Bearer "+this.state.IGDB_Token);
+    }
+    x.send(options.data);
   }
 
   returnIGDB_Token() {
@@ -53,9 +85,8 @@ class Form extends React.Component {
       })
       token.then(result => {
         this.setState({IGDB_Token: result});
-        console.log(this.state);
       })
-  } */
+  } 
 
   displayErrorInput() {
     this.setState({inputClass: this.state.inputClass += ' is-danger'});
@@ -88,7 +119,7 @@ class Form extends React.Component {
   } 
 
   handleChange(event) {
-    // this.searchThroughAPI();
+    this.searchThroughAPI(event.target.value);
     this.setState({value: event.target.value});
   }
 
@@ -101,11 +132,37 @@ class Form extends React.Component {
     this.setState({responses: responses});
   }
 
+  UnFocus() {
+    this.setState({isInputFocused: false})
+  }
+
+
     render() {
       return (
         <>
-          <form onSubmit={this.handleSubmit}>
-          <input value={this.state.value} onChange={this.handleChange} className={this.state.inputClass} type="text" id="lname" name="gameTitle" placeholder="Titre d'un jeu"></input>
+          <form className="game-form" autoComplete="off" onSubmit={this.handleSubmit}>
+          <input  onFocus={(e) => {
+                    this.setState({isInputFocused: true});
+                  }}
+                  onBlur={(e) => {
+                    setTimeout(this.UnFocus.bind(this), 500);
+                  }}
+                  value={this.state.value} 
+                  onChange={this.handleChange} 
+                  className={this.state.inputClass} 
+                  type="text" 
+                  id="lname" 
+                  name="gameTitle" 
+                  placeholder="Titre d'un jeu"></input>
+          <div className={this.state.isInputFocused && this.state.apiResults.length ? "dropdown-menu active" : "dropdown-menu"} id="dropdown-menu">
+            <div className="dropdown-content has-background-black-ter">
+              {this.state.apiResults.map((result) =>
+                <div onClick={() => {this.onSelectTitle(result.name)}} className="dropdown-item has-text-white-ter">
+                {result.name}
+                </div>
+              )}
+            </div>
+          </div>
           <br></br>
           <p className="tooltip"><strong>{this.state.remainingSubmits}</strong> essais restants</p>
           <input className="button is-primary" type="submit" value="Envoyer"></input>
