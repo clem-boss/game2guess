@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { getIGDBSuggestionsByGameName } from "./services/igdb.service.ts";
 import React from 'react'
 import Modal from './Modal'
 import './Form.css'
@@ -8,6 +8,7 @@ class Form extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       goal: this.props.goal,
       value: '',
@@ -16,38 +17,15 @@ class Form extends React.Component {
       modalTitle: '',
       inputClass: "text-input has-background-black-bis input has-text-white-bis",
       responses: [],
-      IGDB_Token: "",
-      apiResults: [],
+      suggestions: [],
       isInputFocused: false,
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleTextInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModalState = this.toggleModalState.bind(this);
-    this.searchThroughAPI = this.searchThroughAPI.bind(this);
     this.onSelectTitle = this.onSelectTitle.bind(this);
   }
-  
 
-  capitalize(word) {
-    let array = word.split(' ');
-    if(array.length > 1) {
-      return array.map(entry => entry.charAt(0).toUpperCase() + entry.toLowerCase().slice(1)).join(" ");
-    } else {
-      return word.charAt(0).toUpperCase() + word.toLowerCase().slice(1);
-    }
-  }
-
-   async searchThroughAPI(value) {
-    const slug_value = value.replace(/ /g, "-").toLowerCase().replace(/[.,/#!$%'^&*;:{}=-_`~()]/g, "");
-    const response = await fetch(`${this.serverDomain}/igdb/${slug_value}`);
-    const suggestions = await response.json();
-
-    if (!suggestions) {
-      return;
-    };
-
-    this.setState({apiResults: suggestions.data});
-  }
 
   onSelectTitle(title) {
     this.setState({value: title});
@@ -63,7 +41,7 @@ class Form extends React.Component {
     this.forceUpdate();
   }
 
-   handleSubmit(event) {
+  handleSubmit(event) {
     if (this.state.value.toLowerCase() === this.props.goal.toLowerCase()) {
       event.preventDefault();
       this.setState({modalTitle: 'Et oui !'})
@@ -83,9 +61,14 @@ class Form extends React.Component {
     this.makeResponsesGauge();
   } 
 
-  handleChange(event) {
-    this.searchThroughAPI(event.target.value);
-    this.setState({value: event.target.value});
+  handleTextInputChange(event) {
+    const value = event.target.value;
+    this.setState({value});
+
+    getIGDBSuggestionsByGameName(value)
+      .then(suggestions => {
+        this.setState({apiResults: suggestions})
+      });
   }
 
   makeResponsesGauge() {
@@ -113,7 +96,7 @@ class Form extends React.Component {
                     setTimeout(this.UnFocus.bind(this), 500);
                   }}
                   value={this.state.value} 
-                  onChange={this.handleChange} 
+                  onChange={this.handleTextInputChange} 
                   className={this.state.inputClass} 
                   type="text" 
                   id="lname" 
