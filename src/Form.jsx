@@ -1,8 +1,11 @@
+// @ts-nocheck
 import React from 'react'
 import Modal from './Modal'
 import './Form.css'
 
 class Form extends React.Component {
+  serverDomain = process.env.GAME2GUESS_SERVER_DOMAIN || "";
+
   constructor(props) {
     super(props);
     this.state = {
@@ -20,10 +23,8 @@ class Form extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModalState = this.toggleModalState.bind(this);
-    this.returnIGDB_Token = this.returnIGDB_Token.bind(this);
     this.searchThroughAPI = this.searchThroughAPI.bind(this);
     this.onSelectTitle = this.onSelectTitle.bind(this);
-    this.returnIGDB_Token();
   }
   
 
@@ -36,57 +37,21 @@ class Form extends React.Component {
     }
   }
 
-   searchThroughAPI(value) {
-     const axios = require('axios');
-     const slug_value = value.replace(/ /g, "-").toLowerCase().replace(/[.,/#!$%'^&*;:{}=-_`~()]/g, "");
+   async searchThroughAPI(value) {
+    const slug_value = value.replace(/ /g, "-").toLowerCase().replace(/[.,/#!$%'^&*;:{}=-_`~()]/g, "");
+    const response = await fetch(`${this.serverDomain}/igdb/${slug_value}`);
+    const suggestions = await response.json();
 
-    axios({
-      url: "https://safe-forest-51192.herokuapp.com/igdb/" + slug_value,
-      method: 'GET'
-    })
-      .then(response => {
-        this.setState({apiResults: response.data});
-      })
-      .catch(err => {
-          console.error(err);
-      }); 
+    if (!suggestions) {
+      return;
+    };
+
+    this.setState({apiResults: suggestions.data});
   }
 
   onSelectTitle(title) {
     this.setState({value: title});
   }
-
-  doCORSRequest(options, printResult) {
-    var x = new XMLHttpRequest();
-    x.open(options.method, this.state.cors_api_url + options.url);
-    x.onload = x.onerror = function() {
-      printResult(
-        options.method + ' ' + options.url + '\n' +
-        x.status + ' ' + x.statusText + '\n\n' +
-        (x.responseText || '')
-      );
-    };
-    if (/^POST/i.test(options.method)) {
-      x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      x.setRequestHeader('Client-ID', "jwz94hqz4avlwtjqyn7y11fuqbfln4");
-      x.setRequestHeader('Authorization', "Bearer "+this.state.IGDB_Token);
-    }
-    x.send(options.data);
-  }
-
-  returnIGDB_Token() {
-    const axios = require('axios');
-    let token = axios.post('https://id.twitch.tv/oauth2/token?client_id=jwz94hqz4avlwtjqyn7y11fuqbfln4&client_secret=ziazxnfp8v0nqr1qqsxugrlv6eofe2&grant_type=client_credentials')
-      .then(function (response) {
-        return response.data.access_token;
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      token.then(result => {
-        this.setState({IGDB_Token: result});
-      })
-  } 
 
   displayErrorInput() {
     this.setState({inputClass: this.state.inputClass += ' is-danger'});
