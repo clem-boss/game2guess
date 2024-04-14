@@ -1,3 +1,5 @@
+const serverDomain = process.env.REACT_APP_SERVER_DOMAIN || "";
+
 export interface IGDBSuggestion {
   id: number,
   name: string,
@@ -6,10 +8,11 @@ export interface IGDBSuggestion {
 
 export async function getIGDBSuggestionsByGameName(name: string): Promise<IGDBSuggestion[]> {
     const slug_value = name
-                        .replace(/ /g, "-")
-                        .toLowerCase()
-                        .replace(/[.,/#!$%'^&*;:{}=-_`~()]/g, "");
-    const response = await fetch(`${this.serverDomain}/igdb/${slug_value}`);
+                        .replace(/[.,/#!$%'^&*;:{}=-_`~()]/g, "")
+                        .replace(" ", "-")
+                        .toLowerCase();
+
+    const response = await fetch(`${serverDomain}/igdb/${slug_value}`);
     const suggestions = await response.json();
 
     return suggestions;
