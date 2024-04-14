@@ -104,7 +104,7 @@ class Form extends React.Component {
                   placeholder="Titre d'un jeu"></input>
           <div className={this.state.isInputFocused && this.state.apiResults.length ? "dropdown-menu active" : "dropdown-menu"} id="dropdown-menu">
             <div className="dropdown-content has-background-black-ter">
-              {this.state.apiResults.map((result) =>
+              {this.state.apiResults?.map((result) =>
                 <div onClick={() => {this.onSelectTitle(result.name)}} className="dropdown-item has-text-white-ter">
                 {result.name}
                 </div>

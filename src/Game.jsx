@@ -2,6 +2,7 @@ import React from 'react'
 import Gallery from './Gallery'
 import Form from './Form'
 import {decrypt} from './encrypt.js'
+import { getGameDocument } from './services/document.service.ts';
 
 
 
@@ -18,19 +19,18 @@ class Game extends React.Component {
     this.handleFormCallback = this.handleFormCallback.bind(this);
     this.handleGalleryCallback = this.handleGalleryCallback.bind(this);
     this.makeImagesGauge = this.makeImagesGauge.bind(this);
-    this.FetchData = this.FetchData.bind(this);
     //this.makeImagesGauge();
   }
 
   componentDidMount() {
-    this.FetchData();
+    getGameDocument()
+      .then(gameDocument => {
+        this.setState({
+          images: gameDocument.images,
+          title: gameDocument.title,
+        });
+      })
     this.makeImagesGauge(1);
-  }
-
-  FetchData() {
-    fetch('https://safe-forest-51192.herokuapp.com/title')
-    .then(response => response.json())
-    .then(data => this.setState({title : decrypt(data)}));
   }
 
   handleFormCallback(childData) {

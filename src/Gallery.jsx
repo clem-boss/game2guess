@@ -13,17 +13,8 @@ class Gallery extends React.Component {
       IsFourthHint: false,
     }
     this.revealNextHint = this.revealNextHint.bind(this);
-    this.FetchData = this.FetchData.bind(this);
-    this.FetchData();
   }
 
-  FetchData() {
-    fetch('https://safe-forest-51192.herokuapp.com/images')
-    .then(response => response.json())
-    .then(data => {
-      this.setState({source : data});
-    });
-  }
 
   revealNextHint(step) {
     this.props.parentCallback(step);
