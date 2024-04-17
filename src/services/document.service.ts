@@ -1,4 +1,4 @@
-const serverDomain = process.env.REACT_APP_SERVER_DOMAIN || "";
+const serverDomain = process.env.REACT_APP_GAME2GUESS_SERVER_DOMAIN || "";
 
 export interface Game2GuessDocument {
     title: CryptoValue;
