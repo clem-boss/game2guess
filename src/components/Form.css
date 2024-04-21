@@ -3,42 +3,28 @@
     position: relative;
     margin: 0 auto;
     min-width: 224px;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: auto auto;
 }
 
-.dropdown-menu {
-    display: none;
+select {
     width: max-content;
-    min-width: unset;
-    padding-top: 4px;
-    position: absolute;
     z-index: 20;
     min-width: 224px;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: all 0.3 ease-in-out;
-}
-
-.dropdown-menu.active {
-    display: unset;
-}
-
-.dropdown-item {
-    cursor: pointer;
-    padding: 4px 8px;
-}
-
-.dropdown-item:hover {
-    background-color: hsl(0, 0%, 21%);
 }
 
 .input {
     max-width: 300px;
-    margin-bottom: 16px;
 }
 
-.tooltip {
+.error {
     margin: 8px;
+}
+
+.button {
+    height: min-content;
+    margin-top: auto;
 }
 
 ::placeholder {

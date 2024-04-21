@@ -1,39 +1,45 @@
-import React from 'react';
+function Hints({hints}) {
+  let hintsToText = [];
 
-class Modal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: this.props.title,
-      numberOfSumbits: 1
+  for (let i = 0; i < 4; i++) {
+    const newChar = i <= hints ? "⬜" : "⬛";
+    hintsToText.push(newChar);
+  }
+
+  return hintsToText.join(" ");
+}
+
+function Submits({submits}) {
+  let submitsToText = [];
+
+  for (let i = 0; i < 10; i++) {
+    let newChar = i <= submits.count ? "❌" : "⚬";
+    if (i === submits.count && submits.isWon) {
+      newChar = "✅"
     }
-    this.onClose = this.onClose.bind(this);
+    submitsToText.push(newChar);
   }
 
-  onClose = (event) => {
-    this.props.parentCallback(false);
-    event.preventDefault();
-  }
+  return submitsToText.join(" ");
+}
 
-    render() {
+export function Modal({modalContent}) {
       return (
         <div className='modal is-active'>
           <div className="modal-background"></div>
           <div className="modal-content">
             <div className="card">
               <div className="card-content">
-              <h2 className="title">{this.state.title}</h2>
+              <h2 className="title">{modalContent.title}</h2>
               <p className='content'>
-                Indices: {this.props.hints}<br></br>
-                Réponses: {this.props.responses}
+                Indices: <Hints hints={modalContent.hints} /><br></br>
+                Réponses: <Submits submits={modalContent.submits} />
               </p>
               </div>
               </div>
           </div>
-          {/* <button onClick={this.onClose} className="modal-close is-large" aria-label="close"></button> */}
         </div>
       );
-    }
   }
 
   export default Modal;
