@@ -10,7 +10,7 @@ export function Suggestions({suggestions, onClick}) {
     return null;
   }
 
-  const listItems = suggestions.map(title => <option onClick={(title) => onClick(title)}>{title}</option>);
+  const listItems = suggestions.map((title, index) => <option onClick={(title) => onClick(title)} key={`suggestion-${index}`}>{title}</option>);
 
   return <select className="select is-multiple" multiple>{listItems}</select>;
 }
@@ -27,6 +27,7 @@ class Form extends React.Component {
     super(props);
     this.state = {
       suggestions: [],
+      value: "",
     }
   }
 
@@ -48,6 +49,7 @@ class Form extends React.Component {
               <div>
                 <Error error={this.props.error} />
                 <input onChange={(e) => this.updateSuggestionsState(e.target.value)} 
+                    value={this.state.value}
                     type="text" 
                     name="gameTitle"
                     className="input"
